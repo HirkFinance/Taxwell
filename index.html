@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Taxwell — Tax optimization, made clear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --ink-deep: #0B2B29;
+    --ink-deep-2: #0F3B37;
+    --mint: #7FE0C4;
+    --mint-deep: #3FAE8E;
+    --gold: #D7A23A;
+    --paper: #F5F1E8;
+    --paper-2: #EDE7D8;
+    --ink: #16211D;
+    --ink-soft: #4E584F;
+    --ink-faint: #8A9089;
+    --rule: #DAD3BF;
+    --on-dark: #F1F7F4;
+    --on-dark-soft: #AFC8C0;
+  }
+
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --paper: #12140F;
+      --paper-2: #191C14;
+      --ink: #EDEAE0;
+      --ink-soft: #B3B6A9;
+      --ink-faint: #767A6E;
+      --rule: #2C2F26;
+      --ink-deep: #081E1C;
+      --ink-deep-2: #0B2E2A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12140F;
+    --paper-2: #191C14;
+    --ink: #EDEAE0;
+    --ink-soft: #B3B6A9;
+    --ink-faint: #767A6E;
+    --rule: #2C2F26;
+    --ink-deep: #081E1C;
+    --ink-deep-2: #0B2E2A;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .wordmark {
+    font-family: "Space Grotesk", "Inter", sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  a { color: inherit; }
+  button { font-family: inherit; }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+
+  /* ---------- Nav ---------- */
+
+  nav.top {
+    background: var(--ink-deep);
+    padding: 1.1rem 0;
+  }
+  nav.top .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .wordmark {
+    color: var(--on-dark);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .wordmark .dot { color: var(--mint); }
+  .nav-links {
+    display: flex;
+    gap: 1.6rem;
+    font-size: 0.88rem;
+    color: var(--on-dark-soft);
+  }
+  .nav-links a { text-decoration: none; }
+  .nav-links a:hover { color: var(--mint); }
+  @media (max-width: 640px) { .nav-links { display: none; } }
+
+  /* ---------- Hero ---------- */
+
+  header.hero {
+    background: linear-gradient(180deg, var(--ink-deep) 0%, var(--ink-deep-2) 100%);
+    color: var(--on-dark);
+    padding: 3.4rem 0 3.6rem;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    color: var(--mint);
+    background: rgba(127,224,196,0.09);
+    border: 1px solid rgba(127,224,196,0.25);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 1.2rem;
+  }
+  .eyebrow .pip { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); }
+
+  .hero h1 {
+    font-size: clamp(2.1rem, 4.6vw, 3rem);
+    line-height: 1.1;
+    max-width: 14ch;
+  }
+
+  .hero p.lede {
+    margin-top: 1.1rem;
+    font-size: 1.08rem;
+    color: var(--on-dark-soft);
+    max-width: 46ch;
+  }
+
+  .hero-cred {
+    margin-top: 1.8rem;
+    font-size: 0.85rem;
+    color: var(--on-dark-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .hero-cred .line { width: 22px; height: 1px; background: var(--on-dark-soft); opacity: 0.5; }
+
+  /* ---------- Calculator card ---------- */
+
+  .calc {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 10px;
+    padding: 1.6rem 1.6rem 1.4rem;
+    box-shadow: 0 20px 50px -20px rgba(0,0,0,0.45);
+  }
+
+  .calc-title {
+    font-size: 0.78rem;
+    text-transform: none;
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+
+  .field {
+    margin-bottom: 0.9rem;
+  }
+  .field label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.3rem;
+  }
+  .field input[type="number"] {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--paper-2);
+    color: var(--ink);
+    font-size: 0.95rem;
+    font-family: "Inter", sans-serif;
+  }
+  .field input[type="number"]:focus-visible {
+    outline: 2px solid var(--mint-deep);
+    outline-offset: 1px;
+  }
+
+  .toggle-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+  }
+  .toggle-row button {
+    flex: 1;
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--rule);
+    background: var(--paper-2);
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .toggle-row button.active {
+    background: var(--ink-deep);
+    border-color: var(--ink-deep);
+    color: var(--on-dark);
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.9rem;
+  }
+  .checkbox-row input { width: 16px; height: 16px; accent-color: var(--mint-deep); }
+
+  .calc-result {
+    margin-top: 1.2rem;
+    padding-top: 1.1rem;
+    border-top: 1px dashed var(--rule);
+  }
+  .calc-result .label {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+  .calc-result .amount {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: var(--mint-deep);
+    margin-top: 0.2rem;
+  }
+  .calc-result .footnote {
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+    margin-top: 0.5rem;
+  }
+
+  /* ---------- Features ---------- */
+
+  section.features {
+    padding: 3.6rem 0 2.6rem;
+  }
+
+  .section-head {
+    max-width: 52ch;
+    margin-bottom: 2.2rem;
+  }
+  .section-head .kicker {
+    font-size: 0.8rem;
+    color: var(--mint-deep);
+    margin-bottom: 0.5rem;
+  }
+  .section-head h2 {
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  @media (max-width: 640px) { .feature-grid { grid-template-columns: 1fr; } }
+
+  .feature {
+    background: var(--paper);
+    padding: 1.7rem 1.6rem;
+  }
+  .feature .mark {
+    width: 30px; height: 30px;
+    border-radius: 7px;
+    background: var(--ink-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.9rem;
+  }
+  .feature .mark svg { width: 16px; height: 16px; }
+  .feature h3 { font-size: 1.02rem; margin-bottom: 0.45rem; }
+  .feature p { margin: 0; color: var(--ink-soft); font-size: 0.92rem; max-width: 38ch; }
+
+  /* ---------- How it works ---------- */
+
+  section.how {
+    background: var(--paper-2);
+    padding: 3.2rem 0;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+  }
+  @media (max-width: 720px) { .steps { grid-template-columns: 1fr; } }
+
+  .step .num {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 0.85rem;
+    color: var(--mint-deep);
+    border: 1px solid var(--mint-deep);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 0.8rem;
+  }
+  .step h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+  .step p { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
+
+  /* ---------- Disclaimer ---------- */
+
+  .disclaimer {
+    padding: 2.6rem 0 1.2rem;
+  }
+  .disclaimer .box {
+    border-left: 3px solid var(--gold);
+    background: var(--paper-2);
+    padding: 1rem 1.2rem;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    border-radius: 2px;
+  }
+
+  /* ---------- Footer ---------- */
+
+  footer {
+    background: var(--ink-deep);
+    color: var(--on-dark-soft);
+    padding: 2rem 0 calc(1.6rem + env(safe-area-inset-bottom, 0px));
+    margin-top: 1rem;
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+  }
+  footer .wordmark { color: var(--on-dark); font-size: 1rem; }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="wordmark">Taxwell<span class="dot">.</span></div>
+    <div class="nav-links">
+      <a href="#estimator">Estimator</a>
+      <a href="#features">What it does</a>
+      <a href="#how">How it works</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="pip"></span> Built for individuals & freelancers</div>
+      <h1>Keep more of what you earn — on purpose, not by accident.</h1>
+      <p class="lede">Taxwell finds the tax-advantaged room you're leaving unused and shows what it's worth in plain numbers, before you file.</p>
+      <div class="hero-cred"><span class="line"></span> Made by Elijah Hirkaler</div>
+    </div>
+
+    <div class="calc" id="estimator">
+      <div class="calc-title">Quick savings estimator</div>
+
+      <div class="field">
+        <label for="income">Annual taxable income</label>
+        <input type="number" id="income" value="85000" min="0" step="1000">
+      </div>
+
+      <div class="field">
+        <label>Filing status</label>
+        <div class="toggle-row" role="group" aria-label="Filing status">
+          <button type="button" id="status-single" class="active">Single</button>
+          <button type="button" id="status-married">Married filing jointly</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="retirement-gap">Unused 401(k)/IRA room this year ($)</label>
+        <input type="number" id="retirement-gap" value="6000" min="0" step="500">
+      </div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="hsa-eligible">
+        <label for="hsa-eligible" style="margin:0;">I have an HSA-eligible health plan and haven't maxed it</label>
+      </div>
+
+      <div class="calc-result">
+        <div class="label">Estimated additional tax savings</div>
+        <div class="amount" id="result">$1,320</div>
+        <div class="footnote">A rough estimate using simplified 2025 federal brackets — not tax advice. State taxes and phase-outs aren't included.</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">What Taxwell does</div>
+      <h2>Four ways it keeps you ahead of April</h2>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#7FE0C4" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></div>
+        <h3>Account optimizer</h3>
+        <p>Tracks how much room is left in your 401(k), IRA, and HSA, and what filling it is actually worth this year.</p>
+      </div>
+      <div class="feature">
+        <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#7FE0C4" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/></svg></div>
+        <h3>Loss-harvest alerts</h3>
+        <p>Flags positions worth selling at a loss to offset gains elsewhere in your portfolio, before year-end deadlines.</p>
+      </div>
+      <div class="feature">
+        <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#7FE0C4" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h13"/></svg></div>
+        <h3>Deduction & credit finder</h3>
+        <p>Surfaces the credits and deductions you're likely eligible for, sorted by dollar impact, not alphabetical order.</p>
+      </div>
+      <div class="feature">
+        <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#7FE0C4" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Timing planner</h3>
+        <p>Suggests when to defer income or bunch expenses so you land in the bracket that costs you least.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">How it works</div>
+      <h2>Three steps, once a quarter</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Connect your accounts</h3>
+        <p>Retirement, brokerage, and HSA balances sync in — read-only, nothing moves without you.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>See what's unused</h3>
+        <p>Taxwell shows the contribution room, deductions, and credits you haven't claimed yet.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Act before deadlines</h3>
+        <p>Get a short list of moves ranked by dollar impact, timed to contribution and filing deadlines.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap disclaimer">
+  <div class="box">
+    Taxwell provides general estimates for planning purposes. It doesn't replace advice from a CPA or tax professional — tax rules are complex, change often, and depend on your full financial picture.
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="wordmark">Taxwell</div>
+    <div>Made by Elijah Hirkaler</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var statusSingle = document.getElementById('status-single');
+  var statusMarried = document.getElementById('status-married');
+  var income = document.getElementById('income');
+  var gap = document.getElementById('retirement-gap');
+  var hsa = document.getElementById('hsa-eligible');
+  var result = document.getElementById('result');
+  var filingStatus = 'single';
+
+  // Simplified 2025 federal marginal brackets (illustrative only)
+  var brackets = {
+    single: [
+      [0, 11600, 0.10],
+      [11600, 47150, 0.12],
+      [47150, 100525, 0.22],
+      [100525, 191950, 0.24],
+      [191950, 243725, 0.32],
+      [243725, 609350, 0.35],
+      [609350, Infinity, 0.37]
+    ],
+    married: [
+      [0, 23200, 0.10],
+      [23200, 94300, 0.12],
+      [94300, 201050, 0.22],
+      [201050, 383900, 0.24],
+      [383900, 487450, 0.32],
+      [487450, 731200, 0.35],
+      [731200, Infinity, 0.37]
+    ]
+  };
+
+  function marginalRate(inc, status) {
+    var table = brackets[status];
+    for (var i = 0; i < table.length; i++) {
+      if (inc > table[i][0] && inc <= table[i][1]) return table[i][2];
+    }
+    return table[table.length - 1][2];
+  }
+
+  function fmt(n) {
+    return '$' + Math.round(n).toLocaleString('en-US');
+  }
+
+  function recalc() {
+    var inc = Math.max(0, parseFloat(income.value) || 0);
+    var retirementGap = Math.max(0, parseFloat(gap.value) || 0);
+    var rate = marginalRate(inc, filingStatus);
+
+    var savings = retirementGap * rate;
+    if (hsa.checked) {
+      savings += 2000 * rate; // rough placeholder HSA headroom
+    }
+
+    result.textContent = fmt(savings);
+  }
+
+  statusSingle.addEventListener('click', function () {
+    filingStatus = 'single';
+    statusSingle.classList.add('active');
+    statusMarried.classList.remove('active');
+    recalc();
+  });
+  statusMarried.addEventListener('click', function () {
+    filingStatus = 'married';
+    statusMarried.classList.add('active');
+    statusSingle.classList.remove('active');
+    recalc();
+  });
+
+  [income, gap, hsa].forEach(function (el) {
+    el.addEventListener('input', recalc);
+  });
+
+  recalc();
+})();
+</script>
+
+</body>
+</html>
