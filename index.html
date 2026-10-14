@@ -3,371 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Taxwell — Tax optimization, made clear</title>
+<title>TaxWell — Tax optimization, made clear</title>
+<meta name="description" content="Interactive 2026 federal tax planning tools: estimator, contribution optimizer, Roth vs traditional, tax-loss harvesting, self-employment tax, capital gains, itemizing, and deadlines. Built by Elijah Hirkaler.">
+<meta name="author" content="Elijah Hirkaler">
+<meta name="theme-color" content="#0B2B29">
+<meta property="og:title" content="TaxWell — Tax optimization, made clear">
+<meta property="og:description" content="Interactive 2026 federal tax planning tools. Estimates for planning, not tax advice.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-
-    --ink-deep: #0B2B29;
-    --ink-deep-2: #0F3B37;
-    --mint: #7FE0C4;
-    --mint-deep: #3FAE8E;
-    --gold: #D7A23A;
-    --paper: #F5F1E8;
-    --paper-2: #EDE7D8;
-    --ink: #16211D;
-    --ink-soft: #4E584F;
-    --ink-faint: #8A9089;
-    --rule: #DAD3BF;
-    --on-dark: #F1F7F4;
-    --on-dark-soft: #AFC8C0;
-  }
-
-  :root:not([data-theme="light"]) {
-    @media (prefers-color-scheme: dark) {
-      --paper: #12140F;
-      --paper-2: #191C14;
-      --ink: #EDEAE0;
-      --ink-soft: #B3B6A9;
-      --ink-faint: #767A6E;
-      --rule: #2C2F26;
-      --ink-deep: #081E1C;
-      --ink-deep-2: #0B2E2A;
-    }
-  }
-  :root[data-theme="dark"] {
-    --paper: #12140F;
-    --paper-2: #191C14;
-    --ink: #EDEAE0;
-    --ink-soft: #B3B6A9;
-    --ink-faint: #767A6E;
-    --rule: #2C2F26;
-    --ink-deep: #081E1C;
-    --ink-deep-2: #0B2E2A;
-  }
-
-  * { box-sizing: border-box; }
-  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
-
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  h1, h2, h3, .wordmark {
-    font-family: "Space Grotesk", "Inter", sans-serif;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-
-  a { color: inherit; }
-  button { font-family: inherit; }
-
-  .wrap { max-width: 1040px; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
-
-  /* ---------- Nav ---------- */
-
-  nav.top {
-    background: var(--ink-deep);
-    padding: 1.1rem 0;
-  }
-  nav.top .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  .wordmark {
-    color: var(--on-dark);
-    font-size: 1.2rem;
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-  }
-  .wordmark .dot { color: var(--mint); }
-  .nav-links {
-    display: flex;
-    gap: 1.6rem;
-    font-size: 0.88rem;
-    color: var(--on-dark-soft);
-  }
-  .nav-links a { text-decoration: none; }
-  .nav-links a:hover { color: var(--mint); }
-  @media (max-width: 640px) { .nav-links { display: none; } }
-
-  /* ---------- Hero ---------- */
-
-  header.hero {
-    background: linear-gradient(180deg, var(--ink-deep) 0%, var(--ink-deep-2) 100%);
-    color: var(--on-dark);
-    padding: 3.4rem 0 3.6rem;
-  }
-
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.05fr 1fr;
-    gap: 2.5rem;
-    align-items: start;
-  }
-  @media (max-width: 860px) {
-    .hero-grid { grid-template-columns: 1fr; }
-  }
-
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-size: 0.8rem;
-    color: var(--mint);
-    background: rgba(127,224,196,0.09);
-    border: 1px solid rgba(127,224,196,0.25);
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-    margin-bottom: 1.2rem;
-  }
-  .eyebrow .pip { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); }
-
-  .hero h1 {
-    font-size: clamp(2.1rem, 4.6vw, 3rem);
-    line-height: 1.1;
-    max-width: 14ch;
-  }
-
-  .hero p.lede {
-    margin-top: 1.1rem;
-    font-size: 1.08rem;
-    color: var(--on-dark-soft);
-    max-width: 46ch;
-  }
-
-  .hero-cred {
-    margin-top: 1.8rem;
-    font-size: 0.85rem;
-    color: var(--on-dark-soft);
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-  .hero-cred .line { width: 22px; height: 1px; background: var(--on-dark-soft); opacity: 0.5; }
-
-  /* ---------- Calculator card ---------- */
-
-  .calc {
-    background: var(--paper);
-    color: var(--ink);
-    border-radius: 10px;
-    padding: 1.6rem 1.6rem 1.4rem;
-    box-shadow: 0 20px 50px -20px rgba(0,0,0,0.45);
-  }
-
-  .calc-title {
-    font-size: 0.78rem;
-    text-transform: none;
-    color: var(--ink-soft);
-    margin-bottom: 1rem;
-  }
-
-  .field {
-    margin-bottom: 0.9rem;
-  }
-  .field label {
-    display: block;
-    font-size: 0.82rem;
-    color: var(--ink-soft);
-    margin-bottom: 0.3rem;
-  }
-  .field input[type="number"] {
-    width: 100%;
-    padding: 0.55rem 0.7rem;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    background: var(--paper-2);
-    color: var(--ink);
-    font-size: 0.95rem;
-    font-family: "Inter", sans-serif;
-  }
-  .field input[type="number"]:focus-visible {
-    outline: 2px solid var(--mint-deep);
-    outline-offset: 1px;
-  }
-
-  .toggle-row {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.3rem;
-  }
-  .toggle-row button {
-    flex: 1;
-    padding: 0.5rem 0.6rem;
-    border-radius: 6px;
-    border: 1px solid var(--rule);
-    background: var(--paper-2);
-    color: var(--ink-soft);
-    font-size: 0.85rem;
-    cursor: pointer;
-  }
-  .toggle-row button.active {
-    background: var(--ink-deep);
-    border-color: var(--ink-deep);
-    color: var(--on-dark);
-  }
-
-  .checkbox-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.88rem;
-    color: var(--ink-soft);
-    margin-bottom: 0.9rem;
-  }
-  .checkbox-row input { width: 16px; height: 16px; accent-color: var(--mint-deep); }
-
-  .calc-result {
-    margin-top: 1.2rem;
-    padding-top: 1.1rem;
-    border-top: 1px dashed var(--rule);
-  }
-  .calc-result .label {
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-  }
-  .calc-result .amount {
-    font-family: "Space Grotesk", sans-serif;
-    font-size: 2.1rem;
-    font-weight: 700;
-    color: var(--mint-deep);
-    margin-top: 0.2rem;
-  }
-  .calc-result .footnote {
-    font-size: 0.76rem;
-    color: var(--ink-faint);
-    margin-top: 0.5rem;
-  }
-
-  /* ---------- Features ---------- */
-
-  section.features {
-    padding: 3.6rem 0 2.6rem;
-  }
-
-  .section-head {
-    max-width: 52ch;
-    margin-bottom: 2.2rem;
-  }
-  .section-head .kicker {
-    font-size: 0.8rem;
-    color: var(--mint-deep);
-    margin-bottom: 0.5rem;
-  }
-  .section-head h2 {
-    font-size: clamp(1.5rem, 3vw, 1.9rem);
-  }
-
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-  }
-  @media (max-width: 640px) { .feature-grid { grid-template-columns: 1fr; } }
-
-  .feature {
-    background: var(--paper);
-    padding: 1.7rem 1.6rem;
-  }
-  .feature .mark {
-    width: 30px; height: 30px;
-    border-radius: 7px;
-    background: var(--ink-deep);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.9rem;
-  }
-  .feature .mark svg { width: 16px; height: 16px; }
-  .feature h3 { font-size: 1.02rem; margin-bottom: 0.45rem; }
-  .feature p { margin: 0; color: var(--ink-soft); font-size: 0.92rem; max-width: 38ch; }
-
-  /* ---------- How it works ---------- */
-
-  section.how {
-    background: var(--paper-2);
-    padding: 3.2rem 0;
-  }
-
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.8rem;
-  }
-  @media (max-width: 720px) { .steps { grid-template-columns: 1fr; } }
-
-  .step .num {
-    font-family: "Space Grotesk", sans-serif;
-    font-size: 0.85rem;
-    color: var(--mint-deep);
-    border: 1px solid var(--mint-deep);
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 0.8rem;
-  }
-  .step h3 { font-size: 1rem; margin-bottom: 0.4rem; }
-  .step p { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
-
-  /* ---------- Disclaimer ---------- */
-
-  .disclaimer {
-    padding: 2.6rem 0 1.2rem;
-  }
-  .disclaimer .box {
-    border-left: 3px solid var(--gold);
-    background: var(--paper-2);
-    padding: 1rem 1.2rem;
-    font-size: 0.86rem;
-    color: var(--ink-soft);
-    border-radius: 2px;
-  }
-
-  /* ---------- Footer ---------- */
-
-  footer {
-    background: var(--ink-deep);
-    color: var(--on-dark-soft);
-    padding: 2rem 0 calc(1.6rem + env(safe-area-inset-bottom, 0px));
-    margin-top: 1rem;
-  }
-  footer .wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    font-size: 0.82rem;
-  }
-  footer .wordmark { color: var(--on-dark); font-size: 1rem; }
-</style>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/ornament.css">
+<link rel="stylesheet" href="css/print.css">
+<script>
+  // Before paint: apply a saved theme and flag JS (enables reveal styles) to avoid a flash.
+  (function () {
+    document.documentElement.classList.add('js');
+    try { var t = localStorage.getItem('taxwell-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  })();
+</script>
+<script type="module" src="js/main.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#tools">Skip to the tools</a>
 
-<nav class="top">
+<div class="print-only print-head wrap">
+  <strong>TaxWell</strong>
+  <span>Tax year 2026 · Illustrative estimate · Printed <span data-print-date></span></span>
+</div>
+
+<nav class="top" aria-label="Primary">
   <div class="wrap">
-    <div class="wordmark">Taxwell<span class="dot">.</span></div>
-    <div class="nav-links">
-      <a href="#estimator">Estimator</a>
-      <a href="#features">What it does</a>
-      <a href="#how">How it works</a>
+    <a class="wordmark" href="./" aria-label="TaxWell home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#F1F7F4" fill-opacity="0.08" stroke="#7FE0C4" stroke-opacity="0.35"/><rect x="8" y="8" width="13" height="3" rx="0.8" fill="#F1F7F4"/><rect x="13" y="10.6" width="3" height="13" rx="0.8" fill="#F1F7F4"/><path d="M18.5 19.2l2.2 2.2 4.6-6.2" fill="none" stroke="#7FE0C4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Taxwell<span class="dot">.</span></span>
+    </a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#estimator">Estimator</a>
+        <a href="#optimizer">Optimizer</a>
+        <a href="#freelance">Freelancers</a>
+        <a href="#deadlines">Deadlines</a>
+      </div>
+      <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Color theme: system">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+        <span data-theme-label>System</span>
+      </button>
     </div>
   </div>
 </nav>
@@ -375,195 +59,616 @@
 <header class="hero">
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow"><span class="pip"></span> Built for individuals & freelancers</div>
-      <h1>Keep more of what you earn — on purpose, not by accident.</h1>
-      <p class="lede">Taxwell finds the tax-advantaged room you're leaving unused and shows what it's worth in plain numbers, before you file.</p>
-      <div class="hero-cred"><span class="line"></span> Made by Elijah Hirkaler</div>
+      <div class="eyebrow"><span class="pip" aria-hidden="true"></span> Tax year <span data-tax-year>2026</span> · figures last verified <time data-verified></time></div>
+      <h1>Keep more of what you earn, <span class="ink">on purpose.</span></h1>
+      <p class="lede">TaxWell shows exactly where every dollar of a paycheck goes and finds the tax-advantaged room you're leaving unused, with the math visible at every step.</p>
+      <div class="hero-stats" aria-label="2026 limits at a glance">
+        <div><strong class="num" data-limit="k401">$24,500</strong>401(k) limit</div>
+        <div><strong class="num" data-limit="ira">$7,500</strong>IRA limit</div>
+        <div><strong class="num" data-limit="hsa">$4,400</strong>HSA self-only</div>
+      </div>
+      <div class="hero-cred"><span class="line" aria-hidden="true"></span> Made by Elijah Hirkaler</div>
     </div>
 
-    <div class="calc" id="estimator">
-      <div class="calc-title">Quick savings estimator</div>
-
-      <div class="field">
-        <label for="income">Annual taxable income</label>
-        <input type="number" id="income" value="85000" min="0" step="1000">
-      </div>
-
-      <div class="field">
-        <label>Filing status</label>
-        <div class="toggle-row" role="group" aria-label="Filing status">
-          <button type="button" id="status-single" class="active">Single</button>
-          <button type="button" id="status-married">Married filing jointly</button>
+    <div class="flow-stage">
+    <div class="hero-ornament" aria-hidden="true"><div data-guilloche="1000" style="width:100%;height:100%"></div></div>
+    <div class="flow-card" data-reveal>
+      <div class="flow-head">
+        <div>
+          <div class="label" id="flow-gross-label">Annual gross pay</div>
+          <div class="gross num" data-out="flow-gross">$85,000</div>
         </div>
+        <span class="badge">Illustrative</span>
       </div>
-
-      <div class="field">
-        <label for="retirement-gap">Unused 401(k)/IRA room this year ($)</label>
-        <input type="number" id="retirement-gap" value="6000" min="0" step="500">
+      <div class="flow-controls">
+        <div class="row">
+          <label class="sr-only" for="flow-income">Annual gross pay</label>
+          <input type="range" id="flow-income" min="20000" max="400000" step="1000" value="85000" aria-describedby="flow-gross-label">
+        </div>
+        <fieldset class="field">
+          <legend class="sr-only">Filing status</legend>
+          <div class="seg" data-status-group="flow">
+            <label><input type="radio" name="flow-status" value="single" checked>Single</label>
+            <label><input type="radio" name="flow-status" value="mfj">Married jointly</label>
+            <label><input type="radio" name="flow-status" value="hoh">Head of household</label>
+          </div>
+        </fieldset>
       </div>
-
-      <div class="checkbox-row">
-        <input type="checkbox" id="hsa-eligible">
-        <label for="hsa-eligible" style="margin:0;">I have an HSA-eligible health plan and haven't maxed it</label>
-      </div>
-
-      <div class="calc-result">
-        <div class="label">Estimated additional tax savings</div>
-        <div class="amount" id="result">$1,320</div>
-        <div class="footnote">A rough estimate using simplified 2025 federal brackets — not tax advice. State taxes and phase-outs aren't included.</div>
-      </div>
+      <svg class="flow" id="flow" role="img" aria-labelledby="flow-title"><title id="flow-title">Paycheck flow</title></svg>
+      <p class="flow-note">Federal only; state and local taxes not included. Contributions come from the estimator below.</p>
+      <details class="flow-table">
+        <summary>View as table</summary>
+        <div class="table-wrap">
+          <table class="data"><thead><tr><th scope="col">Stream</th><th scope="col">Annual</th><th scope="col">Share</th></tr></thead><tbody id="flow-table"></tbody></table>
+        </div>
+      </details>
     </div>
+    </div>
+  </div>
+  <div class="wrap hero-foot" aria-hidden="true">
+    <div class="microprint" data-microprint></div>
+    <div class="waveband" data-waveband></div>
   </div>
 </header>
 
-<section class="features" id="features">
+<nav class="toolbar" aria-label="Tools">
   <div class="wrap">
-    <div class="section-head">
-      <div class="kicker">What Taxwell does</div>
-      <h2>Four ways it keeps you ahead of April</h2>
-    </div>
-
-    <div class="feature-grid">
-      <div class="feature">
-        <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#7FE0C4" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></div>
-        <h3>Account optimizer</h3>
-        <p>Tracks how much room is left in your 401(k), IRA, and HSA, and what filling it is actually worth this year.</p>
-      </div>
-      <div class="feature">
-        <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#7FE0C4" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/></svg></div>
-        <h3>Loss-harvest alerts</h3>
-        <p>Flags positions worth selling at a loss to offset gains elsewhere in your portfolio, before year-end deadlines.</p>
-      </div>
-      <div class="feature">
-        <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#7FE0C4" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h13"/></svg></div>
-        <h3>Deduction & credit finder</h3>
-        <p>Surfaces the credits and deductions you're likely eligible for, sorted by dollar impact, not alphabetical order.</p>
-      </div>
-      <div class="feature">
-        <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#7FE0C4" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
-        <h3>Timing planner</h3>
-        <p>Suggests when to defer income or bunch expenses so you land in the bracket that costs you least.</p>
-      </div>
-    </div>
+    <a href="#estimator">1 · Estimator</a>
+    <a href="#optimizer">2 · Optimizer</a>
+    <a href="#roth">3 · Trad vs Roth</a>
+    <a href="#harvest">4 · Loss harvesting</a>
+    <a href="#freelance">5 · Freelancer</a>
+    <a href="#capgains">6 · Capital gains</a>
+    <a href="#itemize">7 · Itemize?</a>
+    <a href="#deadlines">8 · Deadlines</a>
+    <a href="#scenarios">9 · Scenarios</a>
   </div>
-</section>
+</nav>
 
-<section class="how" id="how">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="kicker">How it works</div>
-      <h2>Three steps, once a quarter</h2>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="num">1</div>
-        <h3>Connect your accounts</h3>
-        <p>Retirement, brokerage, and HSA balances sync in — read-only, nothing moves without you.</p>
-      </div>
-      <div class="step">
-        <div class="num">2</div>
-        <h3>See what's unused</h3>
-        <p>Taxwell shows the contribution room, deductions, and credits you haven't claimed yet.</p>
-      </div>
-      <div class="step">
-        <div class="num">3</div>
-        <h3>Act before deadlines</h3>
-        <p>Get a short list of moves ranked by dollar impact, timed to contribution and filing deadlines.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="wrap disclaimer">
-  <div class="box">
-    Taxwell provides general estimates for planning purposes. It doesn't replace advice from a CPA or tax professional — tax rules are complex, change often, and depend on your full financial picture.
+<div class="wrap notice-wrap" style="padding-top:1.4rem;padding-bottom:1.4rem">
+  <div class="notice" role="note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg>
+    <div><strong>Estimates for planning, not tax advice.</strong> Every result on this page is illustrative, uses 2026 federal figures only, and leaves out state taxes, credits, and many phase-outs. Each tool lists its assumptions. Talk to a CPA or enrolled agent before acting.</div>
   </div>
 </div>
 
-<footer>
+<main id="tools">
+
+<!-- 1 ─────────────────────────────── Estimator -->
+<section class="tool" id="estimator" aria-labelledby="estimator-h">
   <div class="wrap">
-    <div class="wordmark">Taxwell</div>
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">01</span> Federal tax estimator</div>
+      <h2 id="estimator-h">What do pre-tax contributions actually save?</h2>
+      <p>Tax before and after your planned 401(k), IRA, and HSA contributions, and which brackets your income fills.</p>
+    </div>
+    <div class="tool-grid">
+      <form class="card" id="estimator-form" data-reveal novalidate>
+        <div class="card-title">Your numbers</div>
+        <div class="fields">
+          <div class="field">
+            <label for="est-income">Annual gross wages</label>
+            <div class="affix"><span class="pre">$</span><input type="number" id="est-income" name="income" inputmode="numeric" min="0" step="1000"></div>
+          </div>
+          <fieldset class="field">
+            <legend>Filing status</legend>
+            <div class="seg">
+              <label><input type="radio" name="status" value="single">Single</label>
+              <label><input type="radio" name="status" value="mfj">Married jointly</label>
+              <label><input type="radio" name="status" value="hoh">Head of household</label>
+            </div>
+          </fieldset>
+          <div class="fields two">
+            <div class="field">
+              <label for="est-age">Age at year-end</label>
+              <input type="number" id="est-age" name="age" inputmode="numeric" min="18" max="100">
+            </div>
+            <div class="field">
+              <label for="est-cov">HDHP coverage</label>
+              <select id="est-cov" name="hsaCoverage">
+                <option value="none">None</option>
+                <option value="self">Self-only</option>
+                <option value="family">Family</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="est-401k">Planned 401(k) contribution</label>
+            <div class="affix"><span class="pre">$</span><input type="number" id="est-401k" name="k401" inputmode="numeric" min="0" step="500"></div>
+            <span class="hint" data-hint="k401"></span>
+          </div>
+          <div class="fields two">
+            <div class="field">
+              <label for="est-ira">Traditional IRA</label>
+              <div class="affix"><span class="pre">$</span><input type="number" id="est-ira" name="ira" inputmode="numeric" min="0" step="500"></div>
+              <span class="hint" data-hint="ira"></span>
+            </div>
+            <div class="field">
+              <label for="est-hsa">HSA</label>
+              <div class="affix"><span class="pre">$</span><input type="number" id="est-hsa" name="hsa" inputmode="numeric" min="0" step="250"></div>
+              <span class="hint" data-hint="hsa"></span>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="card" data-reveal style="--i:1">
+        <div class="card-title">Result <span class="badge">Illustrative</span></div>
+        <div aria-live="polite" aria-atomic="true">
+          <div class="hero-number">
+            <span class="label">Estimated federal income tax saved</span>
+            <span class="value" data-out="est-savings">$0</span>
+            <span class="sub"><span data-out="est-before">$0</span> before → <span data-out="est-after">$0</span> after contributions</span>
+          </div>
+          <div class="metrics four">
+            <div class="metric"><span class="label">Marginal rate</span><span class="value" data-out="est-marginal">—</span><span class="sub">on the next dollar</span></div>
+            <div class="metric"><span class="label">Effective rate</span><span class="value" data-out="est-effective">—</span><span class="sub">tax ÷ gross wages</span></div>
+            <div class="metric"><span class="label">Taxable income</span><span class="value" data-out="est-taxable">—</span><span class="sub" data-out="est-std"></span></div>
+            <div class="metric"><span class="label">Take-home</span><span class="value" data-out="est-takehome">—</span><span class="sub">after FICA + savings</span></div>
+          </div>
+        </div>
+        <div class="callout warn" data-out="est-warn" hidden></div>
+        <div class="section-label">
+          <span>Bracket ladder</span>
+          <span class="legend">
+            <span class="legend-key"><i style="background:var(--accent-fill)"></i>Taxed after contributions</span>
+            <span class="legend-key"><i style="background:repeating-linear-gradient(135deg,var(--s-401k) 0 2px,transparent 2px 5px)"></i>Removed by contributions</span>
+          </span>
+        </div>
+        <div class="ladder" id="ladder" role="list" aria-label="Federal brackets filled by taxable income"></div>
+        <div class="actions">
+          <button class="btn" type="button" data-save-scenario>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Save as scenario</button>
+          <button class="btn ghost" type="button" data-share>Copy share link</button>
+          <button class="btn ghost" type="button" data-print="estimator">Save as PDF</button>
+        </div>
+        <div class="toast" data-toast aria-live="polite"></div>
+        <details class="assumptions">
+          <summary>Assumptions</summary>
+          <ul>
+            <li>All income is W-2 wages; the 2026 standard deduction applies (<span data-std-list></span>).</li>
+            <li>401(k) and HSA reduce taxable wages; contributions are capped at 2026 limits for your age and coverage.</li>
+            <li>The IRA contribution is treated as fully deductible. If you or a spouse have a workplace plan, deductibility phases out (see the optimizer).</li>
+            <li>FICA in take-home: 6.2% Social Security up to the <span data-fig="SE.socialSecurityWageBase">$184,500</span> wage base, 1.45% Medicare, 0.9% Additional Medicare above the threshold. HSA via payroll is FICA-exempt.</li>
+            <li>No credits (child tax credit, etc.), no state tax, no 2025–2028 senior/tips/overtime deductions, no AMT.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 ─────────────────────────────── Optimizer -->
+<section class="tool" id="optimizer" aria-labelledby="optimizer-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">02</span> Contribution optimizer</div>
+      <h2 id="optimizer-h">Where should your next dollar go?</h2>
+      <p>A common priority order, ranked by what each dollar is worth today, with the room left in each account for 2026.</p>
+    </div>
+    <div class="tool-grid">
+      <form class="card" id="optimizer-form" data-reveal novalidate>
+        <div class="card-title">Your situation</div>
+        <div class="fields">
+          <div class="fields two">
+            <div class="field">
+              <label for="opt-income">Gross wages</label>
+              <div class="affix"><span class="pre">$</span><input type="number" id="opt-income" name="income" inputmode="numeric" min="0" step="1000" value="95000"></div>
+            </div>
+            <div class="field">
+              <label for="opt-age">Age</label>
+              <input type="number" id="opt-age" name="age" inputmode="numeric" min="18" max="100" value="35">
+            </div>
+          </div>
+          <div class="fields two">
+            <div class="field">
+              <label for="opt-status">Filing status</label>
+              <select id="opt-status" name="status"><option value="single">Single</option><option value="mfj">Married jointly</option><option value="hoh">Head of household</option></select>
+            </div>
+            <div class="field">
+              <label for="opt-cov">Health coverage</label>
+              <select id="opt-cov" name="hsaCoverage"><option value="none">Not HSA-eligible</option><option value="self" selected>Self-only HDHP</option><option value="family">Family HDHP</option></select>
+            </div>
+          </div>
+          <div class="fields two">
+            <div class="field">
+              <label for="opt-match">Employer match</label>
+              <div class="affix has-post"><input type="number" id="opt-match" name="matchRate" inputmode="decimal" min="0" max="200" value="50"><span class="post">%</span></div>
+              <span class="hint">of what you contribute</span>
+            </div>
+            <div class="field">
+              <label for="opt-cap">…up to</label>
+              <div class="affix has-post"><input type="number" id="opt-cap" name="matchCapPct" inputmode="decimal" min="0" max="100" value="6"><span class="post">%</span></div>
+              <span class="hint">of salary</span>
+            </div>
+          </div>
+          <div class="fields two">
+            <div class="field">
+              <label for="opt-c401">401(k) so far this year</label>
+              <div class="affix"><span class="pre">$</span><input type="number" id="opt-c401" name="current401k" inputmode="numeric" min="0" step="500" value="3000"></div>
+            </div>
+            <div class="field">
+              <label for="opt-cira">IRA so far</label>
+              <div class="affix"><span class="pre">$</span><input type="number" id="opt-cira" name="currentIra" inputmode="numeric" min="0" step="500" value="0"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="opt-chsa">HSA so far (incl. employer)</label>
+            <div class="affix"><span class="pre">$</span><input type="number" id="opt-chsa" name="currentHsa" inputmode="numeric" min="0" step="250" value="0"></div>
+          </div>
+          <label class="check"><input type="checkbox" name="coveredAtWork" checked> I'm covered by a workplace retirement plan</label>
+        </div>
+      </form>
+      <div class="card" data-reveal style="--i:1">
+        <div class="card-title">Suggested order <span class="badge">Illustrative</span></div>
+        <div aria-live="polite">
+          <p class="sub" style="font-size:.85rem;color:var(--ink-soft);margin-bottom:1rem">Marginal rate: <strong data-out="opt-mr">—</strong> · Total room left: <strong data-out="opt-room">—</strong></p>
+          <ol class="steps" id="opt-steps"></ol>
+        </div>
+        <div class="actions"><button class="btn ghost" type="button" data-print="optimizer">Save as PDF</button></div>
+        <details class="assumptions">
+          <summary>Assumptions</summary>
+          <ul>
+            <li>Order follows a widely used rule of thumb: capture the full match, then HSA, then IRA, then the rest of the 401(k). Your situation (fees, liquidity, debts) may change it.</li>
+            <li>“Value of $1” counts tax deferred at your marginal rate plus any match; HSA adds 7.65% FICA saved when contributed through payroll.</li>
+            <li>Limits: 401(k) <span data-fig="LIMITS.k401.base">$24,500</span> (+<span data-fig="LIMITS.k401.catchUp50">$8,000</span> at 50+, or +<span data-fig="LIMITS.k401.catchUp60to63">$11,250</span> at ages 60–63); IRA <span data-fig="LIMITS.ira.base">$7,500</span> (+<span data-fig="LIMITS.ira.catchUp50">$1,100</span> at 50+); HSA <span data-fig="LIMITS.hsa.self">$4,400</span> self / <span data-fig="LIMITS.hsa.family">$8,750</span> family (+<span data-fig="LIMITS.hsa.catchUp55">$1,000</span> at 55+).</li>
+            <li>IRA deduction phase-out if covered at work: <span data-fig="IRA_PHASEOUTS.tradCovered.single">$81,000–$91,000</span> single, <span data-fig="IRA_PHASEOUTS.tradCovered.mfj">$129,000–$149,000</span> MFJ. Roth IRA phase-out: <span data-fig="IRA_PHASEOUTS.roth.single">$153,000–$168,000</span> single, <span data-fig="IRA_PHASEOUTS.roth.mfj">$242,000–$252,000</span> MFJ. MAGI is approximated as wages minus 401(k) and HSA.</li>
+            <li>IRA type: traditional when fully deductible and you're in the 22% bracket or higher; otherwise Roth if eligible. See Traditional vs Roth to test your own rates.</li>
+            <li>The match is assumed to be paid per paycheck on contributions; true-up and vesting rules are ignored.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 ─────────────────────────────── Traditional vs Roth -->
+<section class="tool" id="roth" aria-labelledby="roth-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">03</span> Traditional vs Roth</div>
+      <h2 id="roth-h">Pay the tax now, or later?</h2>
+      <p>The same pre-tax budget invested both ways. The winner is the account whose tax rate is lower when the tax is paid.</p>
+    </div>
+    <div class="tool-grid">
+      <form class="card" id="roth-form" data-reveal novalidate>
+        <div class="card-title">Assumptions you control</div>
+        <div class="fields">
+          <div class="field">
+            <label for="roth-amt">Pre-tax dollars set aside (one-time)</label>
+            <div class="affix"><span class="pre">$</span><input type="number" id="roth-amt" name="contribution" inputmode="numeric" min="0" step="500" value="7500"></div>
+          </div>
+          <div class="fields two">
+            <div class="field">
+              <label for="roth-cur">Tax rate today</label>
+              <select id="roth-cur" name="currentRate"></select>
+            </div>
+            <div class="field">
+              <label for="roth-ret">Rate in retirement</label>
+              <select id="roth-ret" name="retireRate"></select>
+            </div>
+          </div>
+          <div class="fields two">
+            <div class="field">
+              <label for="roth-g">Annual growth</label>
+              <div class="affix has-post"><input type="number" id="roth-g" name="growth" inputmode="decimal" min="-10" max="20" step="0.5" value="6"><span class="post">%</span></div>
+            </div>
+            <div class="field">
+              <label for="roth-y">Years invested</label>
+              <input type="number" id="roth-y" name="years" inputmode="numeric" min="1" max="60" value="30">
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="card" data-reveal style="--i:1">
+        <div class="card-title">After-tax value at the end <span class="badge">Illustrative</span></div>
+        <div aria-live="polite">
+          <div class="versus">
+            <div class="side" data-side="trad"><span class="tag" hidden>Ahead</span><span class="label"><i style="width:10px;height:3px;background:var(--s-ira);display:inline-block;border-radius:2px"></i>Traditional</span><span class="value" data-out="roth-trad">—</span><span class="sub" data-out="roth-trad-sub"></span></div>
+            <div class="side" data-side="roth"><span class="tag" hidden>Ahead</span><span class="label"><i style="width:10px;height:3px;background:var(--s-hsa);display:inline-block;border-radius:2px"></i>Roth</span><span class="value" data-out="roth-roth">—</span><span class="sub" data-out="roth-roth-sub"></span></div>
+          </div>
+          <p class="callout" data-out="roth-verdict" style="margin-top:.8rem"></p>
+        </div>
+        <div class="chart" id="roth-chart"></div>
+        <div class="actions"><button class="btn ghost" type="button" data-print="roth">Save as PDF</button></div>
+        <details class="assumptions">
+          <summary>Assumptions</summary>
+          <ul>
+            <li>Traditional: the full pre-tax amount is invested and taxed at the retirement rate on withdrawal. Roth: the amount after today's tax is invested and withdrawn tax-free.</li>
+            <li>Rates are flat marginal rates; in reality withdrawals fill brackets gradually, which often favors traditional.</li>
+            <li>Ignores state tax, RMDs, Social Security taxation, and the value of tax diversification. Constant growth, no fees.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 ─────────────────────────────── Tax-loss harvesting -->
+<section class="tool" id="harvest" aria-labelledby="harvest-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">04</span> Tax-loss harvesting</div>
+      <h2 id="harvest-h">How much do realized losses save?</h2>
+      <p>Nets gains and losses the way Schedule D does, applies up to $3,000 against ordinary income, and carries the rest forward.</p>
+    </div>
+    <div class="tool-grid">
+      <form class="card" id="harvest-form" data-reveal novalidate>
+        <div class="card-title">Realized this year</div>
+        <div class="fields">
+          <div class="fields two">
+            <div class="field"><label for="h-inc">Wages + other ordinary income</label><div class="affix"><span class="pre">$</span><input type="number" id="h-inc" name="ordinaryIncome" inputmode="numeric" min="0" step="1000" value="120000"></div><span class="hint">wages, before the standard deduction</span></div>
+            <div class="field"><label for="h-status">Filing status</label><select id="h-status" name="status"><option value="single">Single</option><option value="mfj">Married jointly</option><option value="hoh">Head of household</option></select></div>
+          </div>
+          <div class="fields two">
+            <div class="field"><label for="h-stg">Short-term gains</label><div class="affix"><span class="pre">$</span><input type="number" id="h-stg" name="stGains" inputmode="numeric" min="0" step="500" value="4000"></div></div>
+            <div class="field"><label for="h-ltg">Long-term gains</label><div class="affix"><span class="pre">$</span><input type="number" id="h-ltg" name="ltGains" inputmode="numeric" min="0" step="500" value="9000"></div></div>
+          </div>
+          <div class="fields two">
+            <div class="field"><label for="h-stl">Losses to harvest: short-term</label><div class="affix"><span class="pre">$</span><input type="number" id="h-stl" name="harvestST" inputmode="numeric" min="0" step="500" value="6000"></div></div>
+            <div class="field"><label for="h-ltl">Losses to harvest: long-term</label><div class="affix"><span class="pre">$</span><input type="number" id="h-ltl" name="harvestLT" inputmode="numeric" min="0" step="500" value="10000"></div></div>
+          </div>
+          <div class="field"><label for="h-cf">Loss carryforward from prior years</label><div class="affix"><span class="pre">$</span><input type="number" id="h-cf" name="carryforward" inputmode="numeric" min="0" step="500" value="0"></div></div>
+          <fieldset class="field">
+            <legend>Wash-sale check</legend>
+            <div class="fields two">
+              <div class="field"><label for="h-sell">Date sold at a loss</label><input type="date" id="h-sell" name="sellDate"></div>
+              <div class="field"><label for="h-buy">Date (re)bought same/similar</label><input type="date" id="h-buy" name="buyDate"></div>
+            </div>
+          </fieldset>
+        </div>
+      </form>
+      <div class="card" data-reveal style="--i:1">
+        <div class="card-title">Result <span class="badge">Illustrative</span></div>
+        <div aria-live="polite">
+          <div class="hero-number">
+            <span class="label">Estimated federal tax saved by harvesting</span>
+            <span class="value" data-out="h-save">$0</span>
+            <span class="sub"><span data-out="h-before">$0</span> → <span data-out="h-after">$0</span> total federal tax</span>
+          </div>
+          <div class="metrics three">
+            <div class="metric"><span class="label">Net capital result</span><span class="value" data-out="h-net">—</span><span class="sub" data-out="h-net-sub"></span></div>
+            <div class="metric"><span class="label">Offsets ordinary income</span><span class="value" data-out="h-offset">—</span><span class="sub">max $3,000</span></div>
+            <div class="metric"><span class="label">Carries forward</span><span class="value" data-out="h-carry">—</span><span class="sub" data-out="h-carry-sub"></span></div>
+          </div>
+          <div class="callout warn" data-out="h-wash" hidden></div>
+          <div class="callout ok" data-out="h-wash-ok" hidden></div>
+        </div>
+        <div class="section-label"><span>Netting, step by step</span></div>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th scope="col"></th><th scope="col">Short-term</th><th scope="col">Long-term</th></tr></thead>
+            <tbody id="h-table"></tbody>
+          </table>
+        </div>
+        <div class="actions"><button class="btn ghost" type="button" data-print="harvest">Save as PDF</button></div>
+        <details class="assumptions">
+          <summary>Assumptions</summary>
+          <ul>
+            <li>Prior-year carryforward is treated as short-term (enter long-term carryover as a long-term harvested loss to model it).</li>
+            <li>The $3,000 ordinary-income offset is used before carryforward and consumes short-term losses first.</li>
+            <li>Includes the 3.8% net investment income tax where MAGI exceeds <span data-fig="NIIT.threshold.single">$200,000</span> single / <span data-fig="NIIT.threshold.mfj">$250,000</span> MFJ.</li>
+            <li>Wash sale: a loss is disallowed if substantially identical securities are bought within 30 days before or after the sale, including in IRAs or a spouse's account. The disallowed loss is added to the new lot's basis.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 ─────────────────────────────── Freelancer -->
+<section class="tool" id="freelance" aria-labelledby="freelance-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">05</span> Freelancer &amp; 1099</div>
+      <h2 id="freelance-h">Self-employment tax and quarterly estimates</h2>
+      <p>SE tax on net profit, the half-SE-tax deduction, a simplified QBI deduction, and what to send the IRS each quarter.</p>
+    </div>
+    <div class="tool-grid">
+      <form class="card" id="freelance-form" data-reveal novalidate>
+        <div class="card-title">Your business</div>
+        <div class="fields">
+          <div class="field"><label for="f-profit">Net profit (Schedule C)</label><div class="affix"><span class="pre">$</span><input type="number" id="f-profit" name="netProfit" inputmode="numeric" min="0" step="1000" value="90000"></div><span class="hint">revenue minus business expenses</span></div>
+          <div class="fields two">
+            <div class="field"><label for="f-status">Filing status</label><select id="f-status" name="status"><option value="single">Single</option><option value="mfj">Married jointly</option><option value="hoh">Head of household</option></select></div>
+            <div class="field"><label for="f-w2">Other W-2 wages</label><div class="affix"><span class="pre">$</span><input type="number" id="f-w2" name="w2Wages" inputmode="numeric" min="0" step="1000" value="0"></div></div>
+          </div>
+          <div class="fields two">
+            <div class="field"><label for="f-prior">2025 total tax (optional)</label><div class="affix"><span class="pre">$</span><input type="number" id="f-prior" name="priorYearTax" inputmode="numeric" min="0" step="500" placeholder="0"></div><span class="hint">Form 1040, line 24</span></div>
+            <div class="field"><label for="f-pagi">2025 AGI (optional)</label><div class="affix"><span class="pre">$</span><input type="number" id="f-pagi" name="priorYearAgi" inputmode="numeric" min="0" step="1000" placeholder="0"></div></div>
+          </div>
+          <div class="field"><label for="f-wh">Federal withholding from W-2 jobs</label><div class="affix"><span class="pre">$</span><input type="number" id="f-wh" name="withholding" inputmode="numeric" min="0" step="500" value="0"></div></div>
+        </div>
+      </form>
+      <div class="card" data-reveal style="--i:1">
+        <div class="card-title">Result <span class="badge">Illustrative</span></div>
+        <div aria-live="polite">
+          <div class="hero-number">
+            <span class="label">Quarterly estimated payment</span>
+            <span class="value" data-out="f-q">$0</span>
+            <span class="sub"><span data-out="f-req">$0</span> required for the year · <span data-out="f-harbor"></span></span>
+          </div>
+          <div class="metrics four">
+            <div class="metric"><span class="label">Self-employment tax</span><span class="value" data-out="f-se">—</span><span class="sub" data-out="f-se-sub"></span></div>
+            <div class="metric"><span class="label">Half-SE deduction</span><span class="value" data-out="f-half">—</span><span class="sub">above the line</span></div>
+            <div class="metric"><span class="label">QBI deduction <abbr title="Simplified calculation">*</abbr></span><span class="value" data-out="f-qbi">—</span><span class="sub">simplified</span></div>
+            <div class="metric"><span class="label">Total federal tax</span><span class="value" data-out="f-total">—</span><span class="sub" data-out="f-eff"></span></div>
+          </div>
+          <div class="callout warn" data-out="f-qbi-warn" hidden></div>
+        </div>
+        <div class="section-label"><span>2026 payment schedule</span></div>
+        <div class="table-wrap"><table class="data"><thead><tr><th scope="col">Payment</th><th scope="col">Due</th><th scope="col">Amount</th></tr></thead><tbody id="f-sched"></tbody></table></div>
+        <div class="actions"><button class="btn ghost" type="button" data-print="freelance">Save as PDF</button></div>
+        <details class="assumptions">
+          <summary>Assumptions</summary>
+          <ul>
+            <li>SE tax = 92.35% of net profit × (12.4% Social Security up to the <span data-fig="SE.socialSecurityWageBase">$184,500</span> wage base, reduced by W-2 wages, + 2.9% Medicare) + 0.9% Additional Medicare above <span data-fig="SE.additionalMedicareThreshold.single">$200,000</span> single / <span data-fig="SE.additionalMedicareThreshold.mfj">$250,000</span> MFJ.</li>
+            <li>Half of SE tax (excluding the 0.9% Additional Medicare) is deducted above the line.</li>
+            <li><strong>QBI is simplified:</strong> 20% of (profit − half SE tax), capped at 20% of taxable income, with the 2026 <span data-fig="QBI.minimumDeduction">$400</span> minimum. Ignores the SSTB phase-out and W-2 wage/UBIA limits that apply above <span data-fig="QBI.threshold.single">$201,750</span> single / <span data-fig="QBI.threshold.mfj">$403,500</span> MFJ, SE health insurance, and retirement contributions.</li>
+            <li>Safe harbor: pay the lesser of 90% of this year's tax or 100% of last year's (110% if last year's AGI exceeded $150,000), less withholding, in four equal installments.</li>
+            <li>Standard deduction; no state tax, credits, or home-office specifics.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 ─────────────────────────────── Capital gains -->
+<section class="tool" id="capgains" aria-labelledby="capgains-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">06</span> Capital gains</div>
+      <h2 id="capgains-h">Sell now, or wait until it's long-term?</h2>
+      <p>Short-term gains are taxed like wages. Hold more than a year and the same gain stacks into the 0 / 15 / 20% schedule.</p>
+    </div>
+    <div class="tool-grid">
+      <form class="card" id="capgains-form" data-reveal novalidate>
+        <div class="card-title">The sale</div>
+        <div class="fields">
+          <div class="field"><label for="cg-gain">Gain on the sale</label><div class="affix"><span class="pre">$</span><input type="number" id="cg-gain" name="gain" inputmode="numeric" min="0" step="500" value="25000"></div></div>
+          <div class="fields two">
+            <div class="field"><label for="cg-inc">Other income (wages)</label><div class="affix"><span class="pre">$</span><input type="number" id="cg-inc" name="otherIncome" inputmode="numeric" min="0" step="1000" value="110000"></div></div>
+            <div class="field"><label for="cg-status">Filing status</label><select id="cg-status" name="status"><option value="single">Single</option><option value="mfj">Married jointly</option><option value="hoh">Head of household</option></select></div>
+          </div>
+          <div class="field"><label for="cg-date">Purchase date (optional)</label><input type="date" id="cg-date" name="purchase"><span class="hint">to see when it turns long-term</span></div>
+        </div>
+      </form>
+      <div class="card" data-reveal style="--i:1">
+        <div class="card-title">Federal tax on this gain <span class="badge">Illustrative</span></div>
+        <div aria-live="polite">
+          <div class="versus">
+            <div class="side" data-side="short"><span class="label">Short-term (≤ 1 year)</span><span class="value" data-out="cg-short">—</span><span class="sub" data-out="cg-short-r"></span></div>
+            <div class="side win" data-side="long"><span class="tag">Lower</span><span class="label">Long-term (&gt; 1 year)</span><span class="value" data-out="cg-long">—</span><span class="sub" data-out="cg-long-r"></span></div>
+          </div>
+          <div class="hbars" style="margin-top:1.1rem">
+            <div class="hbar"><div class="top"><span>Short-term</span><span class="v" data-out="cg-short-b"></span></div><div class="track"><div class="bar" data-bar="cg-short" style="--c:var(--s-fed)"></div></div></div>
+            <div class="hbar"><div class="top"><span>Long-term</span><span class="v" data-out="cg-long-b"></span></div><div class="track"><div class="bar" data-bar="cg-long" style="--c:var(--s-take);--i:1"></div></div></div>
+          </div>
+          <p class="callout ok" data-out="cg-verdict" style="margin-top:1rem"></p>
+          <p class="callout" data-out="cg-date-out" hidden></p>
+        </div>
+        <div class="actions"><button class="btn ghost" type="button" data-print="capgains">Save as PDF</button></div>
+        <details class="assumptions">
+          <summary>Assumptions</summary>
+          <ul>
+            <li>Long-term breakpoints on taxable income (2026): 0% up to <span data-fig="LTCG.single.zeroMax">$49,450</span> single / <span data-fig="LTCG.mfj.zeroMax">$98,900</span> MFJ / <span data-fig="LTCG.hoh.zeroMax">$66,200</span> HoH; 20% above <span data-fig="LTCG.single.fifteenMax">$545,500</span> / <span data-fig="LTCG.mfj.fifteenMax">$613,700</span> / <span data-fig="LTCG.hoh.fifteenMax">$579,600</span>.</li>
+            <li>Includes the 3.8% net investment income tax above <span data-fig="NIIT.threshold.single">$200,000</span> single / <span data-fig="NIIT.threshold.mfj">$250,000</span> MFJ MAGI.</li>
+            <li>Long-term means held more than one year: sold on or after the day after the one-year anniversary.</li>
+            <li>No other gains or losses this year; collectibles (28%) and unrecaptured §1250 gain (25%) are not modeled. Price risk of waiting is yours.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 ─────────────────────────────── Standard vs itemized -->
+<section class="tool" id="itemize" aria-labelledby="itemize-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">07</span> Standard vs itemized</div>
+      <h2 id="itemize-h">Does itemizing beat the standard deduction?</h2>
+      <p>Uses the 2026 SALT limit of <span data-fig="SALT.cap">$40,400</span>, which phases down above <span data-fig="SALT.phaseOutStart">$505,000</span> of MAGI, and the new charitable rules.</p>
+    </div>
+    <div class="tool-grid">
+      <form class="card" id="itemize-form" data-reveal novalidate>
+        <div class="card-title">Deductible expenses</div>
+        <div class="fields">
+          <div class="fields two">
+            <div class="field"><label for="it-agi">AGI (≈ MAGI)</label><div class="affix"><span class="pre">$</span><input type="number" id="it-agi" name="agi" inputmode="numeric" min="0" step="1000" value="240000"></div></div>
+            <div class="field"><label for="it-status">Filing status</label><select id="it-status" name="status"><option value="single">Single</option><option value="mfj" selected>Married jointly</option><option value="hoh">Head of household</option></select></div>
+          </div>
+          <div class="fields two">
+            <div class="field"><label for="it-slt">State/local income tax</label><div class="affix"><span class="pre">$</span><input type="number" id="it-slt" name="stateLocalTax" inputmode="numeric" min="0" step="500" value="14000"></div></div>
+            <div class="field"><label for="it-prop">Property tax</label><div class="affix"><span class="pre">$</span><input type="number" id="it-prop" name="propertyTax" inputmode="numeric" min="0" step="500" value="9000"></div></div>
+          </div>
+          <div class="fields two">
+            <div class="field"><label for="it-mort">Mortgage interest</label><div class="affix"><span class="pre">$</span><input type="number" id="it-mort" name="mortgageInterest" inputmode="numeric" min="0" step="500" value="11000"></div></div>
+            <div class="field"><label for="it-char">Charitable gifts (cash)</label><div class="affix"><span class="pre">$</span><input type="number" id="it-char" name="charity" inputmode="numeric" min="0" step="250" value="3000"></div></div>
+          </div>
+          <div class="field"><label for="it-med">Unreimbursed medical</label><div class="affix"><span class="pre">$</span><input type="number" id="it-med" name="medical" inputmode="numeric" min="0" step="500" value="0"></div><span class="hint">only the part above 7.5% of AGI counts</span></div>
+        </div>
+      </form>
+      <div class="card" data-reveal style="--i:1">
+        <div class="card-title">Comparison <span class="badge">Illustrative</span></div>
+        <div aria-live="polite">
+          <div class="versus">
+            <div class="side" data-side="standard"><span class="tag" hidden>Better</span><span class="label">Standard</span><span class="value" data-out="it-std">—</span><span class="sub" data-out="it-std-sub"></span></div>
+            <div class="side" data-side="itemized"><span class="tag" hidden>Better</span><span class="label">Itemized</span><span class="value" data-out="it-item">—</span><span class="sub" data-out="it-item-sub"></span></div>
+          </div>
+          <p class="callout ok" data-out="it-verdict" style="margin-top:.9rem"></p>
+        </div>
+        <div class="section-label"><span>Itemized breakdown</span></div>
+        <div class="hbars" id="it-bars"></div>
+        <div class="actions"><button class="btn ghost" type="button" data-print="itemize">Save as PDF</button></div>
+        <details class="assumptions">
+          <summary>Assumptions</summary>
+          <ul>
+            <li>SALT (2026): the lesser of taxes paid or <span data-fig="SALT.cap">$40,400</span>, reduced by 30% of MAGI over <span data-fig="SALT.phaseOutStart">$505,000</span> but never below <span data-fig="SALT.floor">$10,000</span>. MAGI is approximated by AGI.</li>
+            <li>Charity (new for 2026): itemizers deduct only gifts above 0.5% of AGI; non-itemizers may deduct up to <span data-fig="CHARITY.nonItemizerCap.single">$1,000</span> (<span data-fig="CHARITY.nonItemizerCap.mfj">$2,000</span> MFJ) of cash gifts to public charities on top of the standard deduction.</li>
+            <li>Mortgage interest assumed fully deductible (acquisition debt within the $750k limit). Medical above 7.5% of AGI.</li>
+            <li>Not modeled: the cap that limits itemized deductions to a 35% benefit for 37%-bracket filers, casualty losses, and investment interest.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 ─────────────────────────────── Deadlines -->
+<section class="tool" id="deadlines" aria-labelledby="deadlines-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">08</span> Deadline calendar</div>
+      <h2 id="deadlines-h">What's due next, counted down from today</h2>
+      <p>Dates roll forward automatically. A due date on a weekend or federal holiday moves to the next business day.</p>
+    </div>
+    <div class="deadlines" id="deadline-list"></div>
+    <div class="actions"><button class="btn ghost" type="button" data-print="deadlines">Save as PDF</button></div>
+    <details class="assumptions">
+      <summary>Assumptions</summary>
+      <ul>
+        <li>Countdowns run to 11:59 pm in your device's time zone on the due date.</li>
+        <li>Disaster-area postponements and fiscal-year filers are not reflected. An extension (Form 4868) extends filing, not payment, and does not extend the IRA/HSA contribution deadline.</li>
+      </ul>
+    </details>
+  </div>
+</section>
+
+<!-- 9 ─────────────────────────────── Scenarios -->
+<section class="tool" id="scenarios" aria-labelledby="scenarios-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">09</span> Scenario compare</div>
+      <h2 id="scenarios-h">Compare up to three plans side by side</h2>
+      <p>Save estimator inputs as scenarios. They stay in this browser only, and the share link holds numbers only, never personal data.</p>
+    </div>
+    <div class="scenario-cols" id="scenario-cols" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn" type="button" data-save-scenario>Save current estimator</button>
+      <button class="btn ghost" type="button" data-print="scenarios">Save as PDF</button>
+    </div>
+    <div class="toast" data-toast-scen aria-live="polite"></div>
+  </div>
+</section>
+
+</main>
+
+<div class="print-only wrap print-foot">Illustrative estimate using 2026 federal figures (IRS Rev. Proc. 2025-32, IR-2025-111, Rev. Proc. 2025-19). For planning only, not tax advice. TaxWell · Made by Elijah Hirkaler.</div>
+
+<footer class="site">
+  <div class="waveband" data-waveband aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="meta">
+      <span class="brand-row"><span class="seal" data-guilloche="520" aria-hidden="true"></span><span class="wordmark"><span>Taxwell<span class="dot" style="color:var(--mint)">.</span></span></span></span>
+      <span>Tax year 2026 · figures last verified <time data-verified></time> against IRS Rev. Proc. 2025-32, IR-2025-111, and Rev. Proc. 2025-19.</span>
+    </div>
     <div>Made by Elijah Hirkaler</div>
   </div>
+  <div class="wrap"><div class="microprint" data-microprint></div></div>
 </footer>
 
-<script>
-(function () {
-  var statusSingle = document.getElementById('status-single');
-  var statusMarried = document.getElementById('status-married');
-  var income = document.getElementById('income');
-  var gap = document.getElementById('retirement-gap');
-  var hsa = document.getElementById('hsa-eligible');
-  var result = document.getElementById('result');
-  var filingStatus = 'single';
-
-  // Simplified 2025 federal marginal brackets (illustrative only)
-  var brackets = {
-    single: [
-      [0, 11600, 0.10],
-      [11600, 47150, 0.12],
-      [47150, 100525, 0.22],
-      [100525, 191950, 0.24],
-      [191950, 243725, 0.32],
-      [243725, 609350, 0.35],
-      [609350, Infinity, 0.37]
-    ],
-    married: [
-      [0, 23200, 0.10],
-      [23200, 94300, 0.12],
-      [94300, 201050, 0.22],
-      [201050, 383900, 0.24],
-      [383900, 487450, 0.32],
-      [487450, 731200, 0.35],
-      [731200, Infinity, 0.37]
-    ]
-  };
-
-  function marginalRate(inc, status) {
-    var table = brackets[status];
-    for (var i = 0; i < table.length; i++) {
-      if (inc > table[i][0] && inc <= table[i][1]) return table[i][2];
-    }
-    return table[table.length - 1][2];
-  }
-
-  function fmt(n) {
-    return '$' + Math.round(n).toLocaleString('en-US');
-  }
-
-  function recalc() {
-    var inc = Math.max(0, parseFloat(income.value) || 0);
-    var retirementGap = Math.max(0, parseFloat(gap.value) || 0);
-    var rate = marginalRate(inc, filingStatus);
-
-    var savings = retirementGap * rate;
-    if (hsa.checked) {
-      savings += 2000 * rate; // rough placeholder HSA headroom
-    }
-
-    result.textContent = fmt(savings);
-  }
-
-  statusSingle.addEventListener('click', function () {
-    filingStatus = 'single';
-    statusSingle.classList.add('active');
-    statusMarried.classList.remove('active');
-    recalc();
-  });
-  statusMarried.addEventListener('click', function () {
-    filingStatus = 'married';
-    statusMarried.classList.add('active');
-    statusSingle.classList.remove('active');
-    recalc();
-  });
-
-  [income, gap, hsa].forEach(function (el) {
-    el.addEventListener('input', recalc);
-  });
-
-  recalc();
-})();
-</script>
-
+<noscript><div class="wrap" style="padding:1rem">The calculators need JavaScript enabled.</div></noscript>
 </body>
 </html>
