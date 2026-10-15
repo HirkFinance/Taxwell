@@ -575,6 +575,72 @@ details.assumptions ul { margin: 0.4rem 0 0; padding-left: 1.1rem; font-size: 0.
 .icon-btn:hover { color: var(--danger); border-color: var(--rule); }
 .icon-btn svg { width: 16px; height: 16px; }
 .toast { font-size: 0.82rem; color: var(--accent); min-height: 1.3em; margin-top: 0.5rem; }
+.toast[hidden] { display: none; }
+
+/* ---------- Affiliate links (optimizer) ---------- */
+
+.aff-groups { display: grid; gap: 0.9rem; }
+@media (min-width: 560px) { .aff-groups { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); } }
+.aff-group h4 { font-size: 0.74rem; font-weight: 600; color: var(--ink-soft); margin: 0 0 0.4rem; font-family: var(--font-body); letter-spacing: 0.02em; }
+.aff-link {
+  display: flex; justify-content: space-between; align-items: center; gap: 0.6rem;
+  padding: 0.6rem 0.7rem; margin-bottom: 0.4rem; border: 1px solid var(--rule); border-radius: var(--radius-sm);
+  text-decoration: none; color: var(--ink); background: var(--paper);
+  transition: border-color 0.2s, transform 0.2s var(--ease-out);
+}
+.tool:nth-of-type(even) .aff-link { background: var(--surface); }
+.aff-link:hover { border-color: var(--accent); transform: translateY(-1px); }
+.aff-link strong { display: block; font-size: 0.86rem; }
+.aff-link small { display: block; font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.1rem; }
+.aff-link svg { width: 15px; height: 15px; flex: none; color: var(--accent); }
+.aff-disclosure { font-size: 0.72rem; color: var(--ink-faint); margin: 0.5rem 0 0; }
+.preview-tag { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 50%, transparent); vertical-align: middle; }
+.btn .preview-tag { background: #fff; color: #A8321E; }
+
+/* ---------- Resources: products + newsletter ---------- */
+
+.products { display: grid; gap: 0.9rem; margin-bottom: 1.2rem; }
+@media (min-width: 760px) { .products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.product { display: grid; gap: 0.6rem; align-content: start; }
+.product-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.8rem; }
+.product h3 { font-size: 1.02rem; }
+.product .price { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--accent); }
+.product p { font-size: 0.86rem; color: var(--ink-soft); margin: 0; }
+.product .btn { justify-self: start; margin-top: 0.3rem; }
+.newsletter { display: grid; gap: 1rem; align-items: center; }
+@media (min-width: 760px) { .newsletter { grid-template-columns: 1fr minmax(0, 1.1fr); } }
+.newsletter h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+.newsletter p { font-size: 0.86rem; color: var(--ink-soft); margin: 0; }
+.newsletter-row { display: flex; gap: 0.5rem; }
+.newsletter-row input { flex: 1; min-width: 0; }
+.newsletter-row .btn { min-height: 44px; }
+.newsletter .toast { grid-column: 1 / -1; margin: 0; }
+
+/* ---------- Support / tips ---------- */
+
+.support { display: grid; gap: 0.9rem 1.2rem; align-items: center; margin-top: 1.2rem; }
+@media (min-width: 560px) { .support { grid-template-columns: auto minmax(0, 1fr); } .support-links { grid-column: 2; } }
+.support-icon {
+  width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--gold) 16%, transparent); color: var(--gold-text);
+}
+.support-icon svg { width: 26px; height: 26px; }
+.support h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
+.support p { font-size: 0.86rem; color: var(--ink-soft); margin: 0; max-width: 56ch; }
+.support-links { margin-top: 0; }
+
+/* ---------- Work with me ---------- */
+
+.services { list-style: none; margin: 0 0 1.2rem; padding: 0; display: grid; gap: 0.9rem; }
+@media (min-width: 760px) { .services { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.services h3 { font-size: 1rem; margin-bottom: 0.35rem; }
+.services p { font-size: 0.86rem; color: var(--ink-soft); margin: 0; }
+
+/* ---------- Ad slot ---------- */
+
+#ad-slot { padding-top: 1.6rem; padding-bottom: 1.6rem; }
+.ad-label { display: block; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.3rem; }
+.ad-placeholder { border: 1px dashed var(--rule-strong); border-radius: var(--radius-sm); padding: 2rem 1rem; text-align: center; font-size: 0.8rem; color: var(--ink-faint); }
 
 /* ==========================================================================
    TaxWell — ornament layer: guilloché, wave bands, microprint, numerals.
@@ -2557,6 +2623,249 @@ function initOrnaments() {
 
 return { initOrnaments };
 })();
+// ---- js/site-config.js
+__m['js/site-config.js'] = (() => {
+/**
+ * TaxWell — your links and business settings. This is the ONLY file you need to edit.
+ *
+ * Rule: anything left as '' (empty) stays hidden on the live site, so nothing half-finished shows.
+ * To preview every section with placeholders, open the site with ?preview at the end of the URL,
+ * e.g. https://hirkfinance.github.io/Taxwell/?preview
+ *
+ * After editing, rebuild the single upload file:
+ *   powershell -ExecutionPolicy Bypass -File tools/build-single.ps1
+ * then upload upload-to-github/index.html to GitHub.
+ */
+const SITE = {
+  /* ---------------- "Work with me" (freelance / hiring) ---------------- */
+  contact: {
+    email: '',          // e.g. 'you@example.com' (shown publicly, so consider a separate business address)
+    linkedin: '',       // e.g. 'https://www.linkedin.com/in/your-name'
+    github: 'https://github.com/hirkfinance',
+    booking: '',        // optional scheduling link, e.g. a Calendly URL
+  },
+  services: [
+    { title: 'Custom tax & planning calculators', detail: 'Branded, embeddable tools like the ones on this page, built for CPA firms and advisors.' },
+    { title: 'Financial models in Excel', detail: 'Clean, documented models: cash flow, retirement projections, scenario analysis.' },
+    { title: 'Client-facing visualizations', detail: 'Charts and explainers that make planning recommendations easy for clients to follow.' },
+  ],
+
+  /* ---------------- Affiliate links (shown in the optimizer) ----------------
+   * Sign up for each provider's referral/affiliate program yourself, then paste YOUR tracking link.
+   * Entries with an empty url are hidden. Disclosure text is shown automatically. */
+  affiliates: {
+    hsa: [
+      { name: 'Fidelity HSA', note: 'No account fees; invest from the first dollar.', url: '' },
+      { name: 'Lively', note: 'HSA with a simple app and investment options.', url: '' },
+    ],
+    ira: [
+      { name: 'Fidelity', note: 'Traditional and Roth IRAs, no minimums.', url: '' },
+      { name: 'Charles Schwab', note: 'IRAs with low-cost index funds.', url: '' },
+    ],
+    taxFiling: [
+      { name: 'TurboTax', note: 'Guided tax filing software from Intuit.', url: 'https://refer.intuit.com/elihirk3' },
+    ],
+    brokerage: [
+      { name: 'Robinhood', note: 'Commission-free investing app with taxable and retirement accounts.', url: 'https://join.robinhood.com/hood-b2c52873b' },
+      { name: 'Webull', note: 'Commission-free investing with taxable accounts and IRAs.', url: 'https://www.webull.com/s/3KhteYzhrp1SP4ehEZ' },
+      { name: 'Betterment', note: 'Automated investing with tax-loss harvesting.', url: '' },
+      { name: 'Wealthfront', note: 'Robo-advisor with automated harvesting.', url: '' },
+    ],
+  },
+
+  /* ---------------- Paid extras (e.g. Gumroad / Lemon Squeezy product links) ---------------- */
+  products: [
+    { title: '2026 Tax Planner for Excel', price: '$12', detail: 'Every TaxWell calculator as a spreadsheet you can save and edit offline.', url: '' },
+    { title: 'Year-End Tax Checklist (PDF)', price: '$5', detail: 'A one-page, dated checklist of moves to make before December 31.', url: '' },
+    { title: 'Freelancer Quarterly Tax Kit', price: '$9', detail: 'Estimated-payment tracker plus a safe-harbor worksheet.', url: '' },
+  ],
+
+  /* ---------------- Newsletter ----------------
+   * Paste the form "action" URL from your email provider's embed code.
+   * Buttondown: 'https://buttondown.com/api/emails/embed-subscribe/YOUR_USERNAME'
+   * ConvertKit/Kit, Mailchimp, etc. also work; set emailField to the name their form uses. */
+  newsletter: {
+    action: '',
+    emailField: 'email',
+    pitch: 'One short email when the IRS releases new limits, plus year-end reminders. No spam.',
+  },
+
+  /* ---------------- Tips & donations ----------------
+   * Paste the full https:// link for any you use; empty ones stay hidden. Examples:
+   *   Ko-fi:            'https://ko-fi.com/yourname'
+   *   Buy Me a Coffee:  'https://buymeacoffee.com/yourname'
+   *   PayPal:           'https://paypal.me/yourname'
+   *   Venmo:            'https://venmo.com/u/yourname'
+   *   Cash App:         'https://cash.app/$yourname'
+   * Tip: Ko-fi or Buy Me a Coffee look the most professional and don't show your personal handle. */
+  tips: {
+    message: 'TaxWell is free to use, with no sign-ups. If it saved you money or time, you can chip in to keep it updated for next year\'s tax figures.',
+    links: [
+      { name: 'Ko-fi', url: '' },
+      { name: 'Buy Me a Coffee', url: '' },
+      { name: 'PayPal', url: '' },
+      { name: 'Venmo', url: 'https://venmo.com/u/Elijah-Hirkaler' },
+      { name: 'Cash App', url: 'https://cash.app/$ElijahHirkaler' },
+    ],
+  },
+
+  /* ---------------- Ads (off by default; not recommended at low traffic) ----------------
+   * Requires an approved Google AdSense account. Fill both to show one ad slot. */
+  ads: {
+    adsenseClient: '',  // e.g. 'ca-pub-1234567890123456'
+    adsenseSlot: '',    // e.g. '1234567890'
+  },
+};
+
+return { SITE };
+})();
+// ---- js/monetize.js
+__m['js/monetize.js'] = (() => {
+/**
+ * Renders the business sections from site-config.js: affiliate links, "Work with me",
+ * paid extras, newsletter signup and an optional ad slot.
+ * Anything without a URL stays hidden, unless the page is opened with ?preview.
+ */
+const { SITE } = __m['js/site-config.js'];
+
+const preview = new URLSearchParams(location.search).has('preview');
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const safeUrl = (u) => (/^(https:|mailto:)/i.test(String(u || '').trim()) ? String(u).trim() : '');
+const live = (item) => !!safeUrl(item.url);
+const shown = (item) => live(item) || preview;
+const href = (item) => safeUrl(item.url) || '#preview';
+
+const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>';
+const previewTag = (item) => (!live(item) && preview ? ' <span class="badge preview-tag">link not set</span>' : '');
+
+function hideWithNav(section) {
+  section.hidden = true;
+  document.querySelector(`.toolbar a[href="#${section.id}"]`)?.setAttribute('hidden', '');
+  document.querySelector(`.nav-links a[href="#${section.id}"]`)?.setAttribute('hidden', '');
+}
+
+/* ---------------- Affiliate links in the optimizer ---------------- */
+
+function renderAffiliates() {
+  const box = document.getElementById('affiliates');
+  if (!box) return;
+  const groups = [['taxFiling', 'Tax filing'], ['hsa', 'HSA'], ['ira', 'IRA'], ['brokerage', 'Taxable brokerage']]
+    .map(([k, label]) => [label, (SITE.affiliates[k] || []).filter(shown)])
+    .filter(([, items]) => items.length);
+  if (!groups.length) { box.hidden = true; return; }
+  box.innerHTML = `
+    <div class="section-label"><span>Where to open these accounts &amp; file</span></div>
+    <div class="aff-groups">${groups.map(([label, items]) => `
+      <div class="aff-group"><h4>${esc(label)}</h4>
+        ${items.map((it) => `<a class="aff-link" href="${esc(href(it))}" target="_blank" rel="sponsored noopener">
+          <span><strong>${esc(it.name)}</strong>${previewTag(it)}<small>${esc(it.note)}</small></span>${ARROW}</a>`).join('')}
+      </div>`).join('')}
+    </div>
+    <p class="aff-disclosure">Disclosure: some links above are affiliate or referral links. If you open an account through them, TaxWell's creator may earn a commission or reward at no cost to you. Providers are listed for convenience, not as recommendations; compare fees and features yourself.</p>`;
+}
+
+/* ---------------- Work with me ---------------- */
+
+function renderHire() {
+  const sec = document.getElementById('hire');
+  if (!sec) return;
+  const c = SITE.contact;
+  const links = [
+    c.email && { label: 'Email me', url: `mailto:${c.email}`, primary: true },
+    c.booking && { label: 'Book a call', url: c.booking, primary: !c.email },
+    c.linkedin && { label: 'LinkedIn', url: c.linkedin },
+    c.github && { label: 'GitHub', url: c.github },
+  ].filter(Boolean).filter((l) => safeUrl(l.url));
+  if (preview && !c.email) links.unshift({ label: 'Email me', url: '#preview', primary: true, unset: true });
+  if (!links.length) { hideWithNav(sec); return; }
+  sec.querySelector('#hire-services').innerHTML = SITE.services.map((s, i) =>
+    `<li class="card" style="--i:${i}"><h3>${esc(s.title)}</h3><p>${esc(s.detail)}</p></li>`).join('');
+  sec.querySelector('#hire-links').innerHTML = links.map((l) =>
+    `<a class="btn${l.primary ? '' : ' ghost'}" href="${esc(safeUrl(l.url) || '#preview')}"${l.url.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(l.label)}${l.unset ? ' <span class="badge preview-tag">not set</span>' : ''}</a>`).join('');
+}
+
+/* ---------------- Paid extras + newsletter + ad slot ---------------- */
+
+function renderResources() {
+  const sec = document.getElementById('resources');
+  if (!sec) return;
+  const products = SITE.products.filter(shown);
+  const grid = sec.querySelector('#products');
+  grid.innerHTML = products.map((p, i) => `
+    <article class="card product" style="--i:${i}">
+      <div class="product-top"><h3>${esc(p.title)}</h3><span class="price num">${esc(p.price)}</span></div>
+      <p>${esc(p.detail)}</p>
+      <a class="btn" href="${esc(href(p))}" target="_blank" rel="noopener">Get it${previewTag(p)}</a>
+    </article>`).join('');
+  grid.hidden = !products.length;
+
+  const n = SITE.newsletter;
+  const action = safeUrl(n.action);
+  const form = sec.querySelector('#newsletter');
+  if (action || preview) {
+    form.hidden = false;
+    form.action = action || '#preview';
+    form.querySelector('[data-pitch]').textContent = n.pitch;
+    form.querySelector('input[type="email"]').name = n.emailField || 'email';
+    if (!action) form.querySelector('button').insertAdjacentHTML('beforeend', ' <span class="badge preview-tag">not set</span>');
+    form.addEventListener('submit', (e) => {
+      if (!action) { e.preventDefault(); return; }
+      setTimeout(() => { form.querySelector('[data-thanks]').hidden = false; }, 300);
+    });
+  } else form.hidden = true;
+
+  const support = renderSupport();
+  if (!products.length && form.hidden && !support) { hideWithNav(sec); return; }
+  // Keep the intro honest about what's actually shown.
+  const parts = [products.length && 'templates built on the same 2026 figures as the calculators above',
+    !form.hidden && 'updates when the numbers change', support && 'ways to support the project'].filter(Boolean);
+  const intro = sec.querySelector('.tool-head p');
+  intro.textContent = `${parts.join(parts.length > 2 ? ', ' : ' and ').replace(/, (?=[^,]*$)/, ', and ')}.`.replace(/^./, (c) => c.toUpperCase());
+  if (!products.length && form.hidden) sec.querySelector('#resources-h').textContent = 'Support the project';
+}
+
+/* ---------------- Tips & donations ---------------- */
+
+function renderSupport() {
+  const box = document.getElementById('support');
+  if (!box) return false;
+  const links = (SITE.tips?.links || []).filter(shown);
+  if (!links.length) { box.hidden = true; return false; }
+  box.hidden = false;
+  box.querySelector('[data-support-msg]').textContent = SITE.tips.message;
+  box.querySelector('#support-links').innerHTML = links.map((l, i) =>
+    `<a class="btn${i ? ' ghost' : ''}" href="${esc(href(l))}" target="_blank" rel="noopener">${esc(l.name)}${previewTag(l)}</a>`).join('');
+  return true;
+}
+
+function renderAd() {
+  const slot = document.getElementById('ad-slot');
+  if (!slot) return;
+  const { adsenseClient: client, adsenseSlot: id } = SITE.ads;
+  if (!/^ca-pub-\d+$/.test(client || '') || !/^\d+$/.test(id || '')) {
+    if (preview) { slot.hidden = false; slot.innerHTML = '<div class="ad-placeholder">Ad slot (set adsenseClient and adsenseSlot in site-config.js)</div>'; }
+    return;
+  }
+  slot.hidden = false;
+  slot.innerHTML = `<span class="ad-label">Advertisement</span><ins class="adsbygoogle" style="display:block" data-ad-client="${client}" data-ad-slot="${id}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
+  s.crossOrigin = 'anonymous';
+  s.onload = () => { try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch { /* ad blockers */ } };
+  document.head.append(s);
+}
+
+function initMonetize() {
+  renderAffiliates();
+  renderHire();
+  renderResources();
+  renderAd();
+  if (preview) document.documentElement.classList.add('is-preview');
+}
+
+return { initMonetize };
+})();
 // ---- js/main.js
 __m['js/main.js'] = (() => {
 const DATA = __m['js/tax-data.js'];
@@ -2564,6 +2873,7 @@ const { profile, update, subscribe, fromHash } = __m['js/state.js'];
 const { initReveal, fmt, tweenNumber } = __m['js/motion.js'];
 const { createFlow } = __m['js/flow.js'];
 const { initOrnaments } = __m['js/ornament.js'];
+const { initMonetize } = __m['js/monetize.js'];
 const { $, $$, fillForm } = __m['js/ui.js'];
 const { initEstimator } = __m['js/tools/estimator.js'];
 const { initOptimizer } = __m['js/tools/optimizer.js'];
@@ -2702,6 +3012,7 @@ function boot() {
   initItemize();
   initDeadlines();
   initScenarios();
+  initMonetize();
   initPrint();
   initToolbarSpy();
   initReveal();
@@ -2736,6 +3047,7 @@ return {  };
         <a href="#optimizer">Optimizer</a>
         <a href="#freelance">Freelancers</a>
         <a href="#deadlines">Deadlines</a>
+        <a href="#hire">Work with me</a>
       </div>
       <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Color theme: system">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
@@ -2811,6 +3123,8 @@ return {  };
     <a href="#itemize">7 · Itemize?</a>
     <a href="#deadlines">8 · Deadlines</a>
     <a href="#scenarios">9 · Scenarios</a>
+    <a href="#resources">10 · Resources</a>
+    <a href="#hire">11 · Work with me</a>
   </div>
 </nav>
 
@@ -2994,6 +3308,7 @@ return {  };
           <p class="sub" style="font-size:.85rem;color:var(--ink-soft);margin-bottom:1rem">Marginal rate: <strong data-out="opt-mr">—</strong> · Total room left: <strong data-out="opt-room">—</strong></p>
           <ol class="steps" id="opt-steps"></ol>
         </div>
+        <div id="affiliates" class="no-print"></div>
         <div class="actions"><button class="btn ghost" type="button" data-print="optimizer">Save as PDF</button></div>
         <details class="assumptions">
           <summary>Assumptions</summary>
@@ -3339,6 +3654,55 @@ return {  };
       <button class="btn ghost" type="button" data-print="scenarios">Save as PDF</button>
     </div>
     <div class="toast" data-toast-scen aria-live="polite"></div>
+  </div>
+</section>
+
+<div class="wrap no-print" id="ad-slot" hidden></div>
+
+<!-- 10 ─────────────────────────────── Resources: paid extras + newsletter -->
+<section class="tool no-print" id="resources" aria-labelledby="resources-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">10</span> Resources</div>
+      <h2 id="resources-h">Resources &amp; support</h2>
+      <p>Templates built on the same 2026 figures as the calculators above, updates when the numbers change, and ways to support the project.</p>
+    </div>
+    <div class="products" id="products"></div>
+    <form class="card newsletter" id="newsletter" method="post" target="_blank" data-reveal hidden>
+      <div>
+        <h3>Get the 2027 numbers first</h3>
+        <p data-pitch></p>
+      </div>
+      <div class="newsletter-row">
+        <label class="sr-only" for="nl-email">Email address</label>
+        <input type="email" id="nl-email" name="email" required autocomplete="email" placeholder="you@example.com">
+        <button class="btn" type="submit">Subscribe</button>
+      </div>
+      <p class="toast" data-thanks hidden>Thanks! Check your inbox to confirm.</p>
+    </form>
+    <div class="card support" id="support" data-reveal hidden>
+      <div class="support-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3.5c0 1 1 1 1 2s-1 1-1 2M12 3.5c0 1 1 1 1 2s-1 1-1 2"/></svg>
+      </div>
+      <div>
+        <h3>Support TaxWell</h3>
+        <p data-support-msg></p>
+      </div>
+      <div class="actions support-links" id="support-links"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 ─────────────────────────────── Work with me -->
+<section class="tool no-print" id="hire" aria-labelledby="hire-h">
+  <div class="wrap">
+    <div class="tool-head" data-reveal>
+      <div class="kicker"><span class="idx">11</span> Work with me</div>
+      <h2 id="hire-h">Need tools like these for your firm or clients?</h2>
+      <p>I'm Elijah Hirkaler. I build precise, tested financial calculators, models, and visualizations. Everything on this page is my work.</p>
+    </div>
+    <ul class="services" id="hire-services"></ul>
+    <div class="actions" id="hire-links"></div>
   </div>
 </section>
 
