@@ -2685,7 +2685,7 @@ const SITE = {
    * Buttondown: 'https://buttondown.com/api/emails/embed-subscribe/YOUR_USERNAME'
    * ConvertKit/Kit, Mailchimp, etc. also work; set emailField to the name their form uses. */
   newsletter: {
-    action: '',
+    action: 'https://buttondown.com/api/emails/embed-subscribe/Taxwell',
     emailField: 'email',
     pitch: 'One short email when the IRS releases new limits, plus year-end reminders. No spam.',
   },
@@ -2809,7 +2809,13 @@ function renderResources() {
     form.querySelector('input[type="email"]').name = n.emailField || 'email';
     if (!action) form.querySelector('button').insertAdjacentHTML('beforeend', ' <span class="badge preview-tag">not set</span>');
     form.addEventListener('submit', (e) => {
-      if (!action) { e.preventDefault(); return; }
+      if (!action) {
+        e.preventDefault();
+        const msg = form.querySelector('[data-thanks]');
+        msg.textContent = 'Preview only: no newsletter service is connected yet. Add your signup URL to site-config.js (newsletter.action).';
+        msg.hidden = false;
+        return;
+      }
       setTimeout(() => { form.querySelector('[data-thanks]').hidden = false; }, 300);
     });
   } else form.hidden = true;
